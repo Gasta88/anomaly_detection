@@ -1,4 +1,4 @@
-from kfp.v2.dsl import component, Artifact, Output
+from kfp.dsl import component, Artifact, Output
 @component(
     base_image="python:3.9",
     packages_to_install=["google-cloud-bigquery", "pandas", "pyarrow"]

@@ -1,4 +1,4 @@
-from kfp.v2.dsl import component, Artifact, Input, Output
+from kfp.dsl import component, Artifact, Input, Output
 
 @component(
     base_image="tensorflow/tensorflow:2.10.0",

@@ -17,7 +17,7 @@ terraform {
 #--------------------------- Cloud Storage
 
 resource "google_storage_bucket" "ai_storage" {
-  name     = "anomaly-detection-${terraform.workspace}"
+  name     = "bondola-ai-anomaly-detection-${terraform.workspace}"
   location = "us-central1"
   lifecycle {
     prevent_destroy = false

@@ -1,18 +1,22 @@
 from google.cloud import aiplatform
-from kfp.v2.dsl import pipeline 
-from kfp.v2 import compiler
+from kfp.dsl import pipeline, PipelineConfig
+from kfp import compiler
 import os
 from components.data_ingestion.extract_data import extract_data
 from components.data_processing.preprocess_data import preprocess_data
 from components.model_training.train_tfp_model import train_tfp_model
 from components.utils import upload_to_gcs
 
-ENV = os.environ("ENV", "dev")
+ENV = os.environ.get("ENV", "dev")
 PROJECT_ID = "eighth-duality-457819-r4"
 REGION = "us-central1"
-BUCKET_NAME = f"anomaly-detection-{ENV}"
-
-@pipeline(name="anomaly-detection-training-pipeline")
+BUCKET_NAME = f"bondola-ai-anomaly-detection-{ENV}"
+pipeline_config = PipelineConfig(
+    service_account="vertexai@eighth-duality-457819-r4.iam.gserviceaccount.com"
+)
+@pipeline(
+        name="anomaly-detection-training-pipeline"
+        )
 def anomaly_detection_pipeline(
     project_id: str,
     bq_table: str,
@@ -33,7 +37,8 @@ def anomaly_detection_pipeline(
 pipeline_file = "anomaly_detection_pipeline.json"
 compiler.Compiler().compile(
     pipeline_func=anomaly_detection_pipeline,
-    package_path=pipeline_file
+    package_path=pipeline_file,
+    pipeline_config=pipeline_config
 )
 
 # Upload the pipeline file to GCS

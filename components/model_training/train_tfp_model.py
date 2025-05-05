@@ -1,4 +1,4 @@
-from kfp.v2.dsl import component, Artifact, Output, Input, Model
+from kfp.dsl import component, Artifact, Output, Input, Model
 @component(
     base_image="tensorflow/tensorflow:2.10.0",
     packages_to_install=["tensorflow-probability", "pandas", "pyarrow", "matplotlib"]

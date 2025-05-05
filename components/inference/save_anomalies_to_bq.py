@@ -1,4 +1,4 @@
-from kfp.v2.dsl import component,Artifact, Input
+from kfp.dsl import component,Artifact, Input
 
 @component(
     base_image="python:3.9",

@@ -1,4 +1,4 @@
-from kfp.v2.dsl import component, Artifact, Output, Input
+from kfp.dsl import component, Artifact, Output, Input
 @component(
     base_image="python:3.9",
     packages_to_install=["pandas", "scikit-learn", "pyarrow"]
