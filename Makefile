@@ -26,16 +26,34 @@ truncate_data:
 	@echo "Purging data from table $(TABLE_NAME)"
 	@python $(PYTHON_SCRIPT) truncate
 
+# Create GCS for artefact storage
 create_bucket:
 	@echo "Creating bucket $(BUCKET_NAME)-$(ENV)"
 	@gcloud storage buckets create gs://$(BUCKET_NAME)-$(ENV) --location us-central1
 
+# Delete GCS for artefact storage
 delete_bucket:
 	@echo "Deleting bucket $(BUCKET_NAME)-$(ENV)"
 	@gcloud storage rm --recursive gs://$(BUCKET_NAME)-$(ENV)
 
+# Compile and upload pipelines
+create_pipelines:
+	@echo "Creating pipelines files"
+	@python training_pipeline.py
+	@python inference_pipeline.py
+
+# Run training pipeline
+train:
+	@echo "Running training pipeline"
+	@python run_pipelines.py train
+
+# Run inference pipeline
+infer:
+	@echo "Running inference pipeline"
+	@python run_pipelines.py infer
+
 # Default target
-create: create_dataset insert_data create_bucket
+create: create_dataset insert_data create_bucket create_pipelines
 destroy: truncate_data delete_dataset delete_bucket
 
-.PHONY: create_dataset delete_dataset insert_data truncate_data create_bucket delete_bucket create destroy
+.PHONY: create_dataset delete_dataset insert_data truncate_data create_bucket delete_bucket create_pipelines train infer create destroy

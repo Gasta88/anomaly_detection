@@ -4,12 +4,7 @@ from kfp import compiler
 from components.utils import upload_to_gcs
 import os
 from components.inference import detect_anomalies, save_anomalies_to_bq
-
-ENV = os.environ.get("ENV", "dev")
-PROJECT_ID = "eighth-duality-457819-r4"
-REGION = "us-central1"
-BUCKET_NAME = f"anomaly-detection-{ENV}"
-
+from components.utils import upload_to_gcs, BUCKET_NAME
 
 @pipeline(
         name="anomaly-detection-inference-pipeline",
@@ -53,18 +48,19 @@ upload_to_gcs(
 )
 
 # Deploy the pipeline
-aiplatform.init(project=PROJECT_ID, location=REGION)
-pipeline_job = aiplatform.PipelineJob(
-    display_name="anomaly-detection-inference",
-    template_path=pipeline_file,
-    pipeline_root=f"gs://{BUCKET_NAME}/pipeline_root",
-    parameter_values={
-        "project_id": PROJECT_ID,
-        "bq_source_table": "anomaly_detection.new_users_metrics",
-        "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
-        "model_name": "anomaly-detection-model"
-    }
-)
+# aiplatform.init(project=PROJECT_ID, location=REGION)
+# pipeline_job = aiplatform.PipelineJob(
+#     display_name="anomaly-detection-inference",
+#     template_path=pipeline_file,
+#     pipeline_root=f"gs://{BUCKET_NAME}/pipeline_root",
+#     credentials=CREDENTIALS,
+#     parameter_values={
+#         "project_id": PROJECT_ID,
+#         "bq_source_table": "anomaly_detection.new_users_metrics",
+#         "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
+#         "model_name": "anomaly-detection-model"
+#     }
+# )
 
+# pipeline_job.submit()
 os.remove(pipeline_file)
-# pipeline_job.run()
