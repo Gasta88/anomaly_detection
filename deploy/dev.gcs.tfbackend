@@ -1,2 +1,0 @@
-bucket = "terraform-bondola-ai-states"
-prefix    = "dev-terraform-state-files/anomaly-detection-pipelines.tfstate"
