@@ -40,7 +40,7 @@ delete_bucket:
 create_pipelines:
 	@echo "Creating pipelines files"
 	@python training_pipeline.py
-	@python inference_pipeline.py
+	# @python inference_pipeline.py
 
 # Run training pipeline
 train:
@@ -48,9 +48,9 @@ train:
 	@python run_pipelines.py train
 
 # Run inference pipeline
-infer:
-	@echo "Running inference pipeline"
-	@python run_pipelines.py infer
+# infer:
+# 	@echo "Running inference pipeline"
+# 	@python run_pipelines.py infer
 
 # Default target
 create: create_dataset insert_data create_bucket create_pipelines

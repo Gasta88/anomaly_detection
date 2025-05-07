@@ -2,7 +2,7 @@ from kfp.dsl import component, Artifact, Input, Output
 
 @component(
     base_image="tensorflow/tensorflow:2.10.0",
-    packages_to_install=["tensorflow-probability", "pandas", "pyarrow", "google-cloud-bigquery"]
+    packages_to_install=["tensorflow-probability", "pandas", "pyarrow", "google-cloud-bigquery", "db_dtypes"]
 )
 def detect_anomalies(
     project_id: str,
@@ -13,7 +13,7 @@ def detect_anomalies(
     """Detect anomalies in new data."""
     import pandas as pd
     import numpy as np
-    import tensorflow as tf
+    # import tensorflow as tf
     import tensorflow_probability as tfp
     import pickle
     import os

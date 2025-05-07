@@ -14,7 +14,8 @@ def run_training_pipeline():
             "project_id": PROJECT_ID,
             "bq_table": "anomaly_detection.new_users_metrics",
             "bucket_name": BUCKET_NAME
-        }
+        },
+        # enable_caching=False
     )
     pipeline_job.submit()
 
@@ -30,7 +31,8 @@ def run_inference_pipeline():
             "bq_source_table": "anomaly_detection.new_users_metrics",
             "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
             "model_name": "anomaly-detection-model"
-        }
+        },
+        # enable_caching=False
     )
     pipeline_job.submit()
 

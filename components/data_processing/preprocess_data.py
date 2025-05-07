@@ -10,12 +10,11 @@ def preprocess_data(
 ):
     """Preprocess data for anomaly detection."""
     import pandas as pd
-    import numpy as np
     from sklearn.preprocessing import LabelEncoder
     import json
 
     # Load the data
-    df = pd.read_parquet(data.path)
+    df = pd.read_parquet(data.path, engine='pyarrow', dtype_backend="pyarrow")
 
     # Convert dates to datetime and extract features
     df['created_at'] = pd.to_datetime(df['created_at'])

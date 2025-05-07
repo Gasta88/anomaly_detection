@@ -6,9 +6,7 @@ import os
 from components.inference import detect_anomalies, save_anomalies_to_bq
 from components.utils import upload_to_gcs, BUCKET_NAME
 
-@pipeline(
-        name="anomaly-detection-inference-pipeline",
-        service_account="vertexai@eighth-duality-457819-r4.iam.gserviceaccount.com")
+@pipeline(name="anomaly-detection-inference-pipeline")
 def anomaly_detection_inference(
     project_id: str,
     bq_source_table: str,

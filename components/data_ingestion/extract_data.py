@@ -1,7 +1,7 @@
 from kfp.dsl import component, Artifact, Output
 @component(
     base_image="python:3.9",
-    packages_to_install=["google-cloud-bigquery", "pandas", "pyarrow"]
+    packages_to_install=["google-cloud-bigquery", "pandas", "pyarrow", "db_dtypes"]
 )
 def extract_data(
     project_id: str,

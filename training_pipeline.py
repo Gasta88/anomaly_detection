@@ -3,7 +3,7 @@ from kfp import compiler
 import os
 from components.data_ingestion.extract_data import extract_data
 from components.data_processing.preprocess_data import preprocess_data
-from components.model_training.train_tfp_model import train_tfp_model
+from components.model_training.train_ocsvm_model import train_ocsvm_model
 from components.utils import upload_to_gcs, BUCKET_NAME
 
 @pipeline(
@@ -20,7 +20,7 @@ def anomaly_detection_pipeline(
         data=extract_op.outputs["output_data"]
     )
 
-    train_op = train_tfp_model(
+    train_op = train_ocsvm_model(
         training_data=preprocess_op.outputs["output_training_data"],
         metadata=preprocess_op.outputs["output_metadata"]
     )

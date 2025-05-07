@@ -2,7 +2,7 @@ from kfp.dsl import component,Artifact, Input
 
 @component(
     base_image="python:3.9",
-    packages_to_install=["pandas", "google-cloud-bigquery", "pyarrow"]
+    packages_to_install=["pandas", "google-cloud-bigquery", "pyarrow", "db_dtypes"]
 )
 def save_anomalies_to_bq(
     project_id: str,
