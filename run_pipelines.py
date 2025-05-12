@@ -30,7 +30,7 @@ def run_inference_pipeline():
             "project_id": PROJECT_ID,
             "bq_source_table": "anomaly_detection.new_users_metrics",
             "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
-            "model_name": "anomaly-detection-model"
+            "model_name": "ocsvm_model"
         },
         # enable_caching=False
     )

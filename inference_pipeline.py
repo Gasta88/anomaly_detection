@@ -45,20 +45,4 @@ upload_to_gcs(
     destination_blob_name=f"pipeline_root/{pipeline_file}"
 )
 
-# Deploy the pipeline
-# aiplatform.init(project=PROJECT_ID, location=REGION)
-# pipeline_job = aiplatform.PipelineJob(
-#     display_name="anomaly-detection-inference",
-#     template_path=pipeline_file,
-#     pipeline_root=f"gs://{BUCKET_NAME}/pipeline_root",
-#     credentials=CREDENTIALS,
-#     parameter_values={
-#         "project_id": PROJECT_ID,
-#         "bq_source_table": "anomaly_detection.new_users_metrics",
-#         "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
-#         "model_name": "anomaly-detection-model"
-#     }
-# )
-
-# pipeline_job.submit()
 os.remove(pipeline_file)

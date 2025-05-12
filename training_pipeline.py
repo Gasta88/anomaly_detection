@@ -21,6 +21,9 @@ def anomaly_detection_pipeline(
     )
 
     train_op = train_ocsvm_model(
+        project_id=project_id,
+        location="us-central1",
+        bucket_name=BUCKET_NAME,
         training_data=preprocess_op.outputs["output_training_data"],
         metadata=preprocess_op.outputs["output_metadata"]
     )
@@ -39,19 +42,4 @@ upload_to_gcs(
     destination_blob_name=f"pipeline_root/{pipeline_file}"
 )
 
-# # Deploy the pipeline
-# aiplatform.init(project=PROJECT_ID, location=REGION)
-# pipeline_job = aiplatform.PipelineJob(
-#     display_name="anomaly-detection-training",
-#     template_path=pipeline_file,
-#     pipeline_root=f"gs://{BUCKET_NAME}/pipeline_root",
-#     credentials=CREDENTIALS,
-#     parameter_values={
-#         "project_id": PROJECT_ID,
-#         "bq_table": "anomaly_detection.new_users_metrics",
-#         "bucket_name": BUCKET_NAME
-#     }
-# )
-
-# pipeline_job.submit()
 os.remove(pipeline_file)

@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 TABLE_NAME = 'new_users_metrics'
 DATASET_ID = 'anomaly_detection'
 
+# Generate random data, change num_days to generate more data
 def generate_random_data(num_days=100):
     data = []
     start_date = datetime.now()
