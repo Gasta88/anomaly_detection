@@ -1,5 +1,5 @@
 import argparse
-from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS
+from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, SERVICE_ACCOUNT
 from google.cloud import aiplatform
 
 
@@ -15,7 +15,7 @@ def run_training_pipeline():
             "bq_table": "anomaly_detection.new_users_metrics",
             "bucket_name": BUCKET_NAME
         },
-        # enable_caching=False
+        enable_caching=False
     )
     pipeline_job.submit()
 
@@ -28,11 +28,13 @@ def run_inference_pipeline():
         credentials=CREDENTIALS,
         parameter_values={
             "project_id": PROJECT_ID,
+            "location": REGION,
             "bq_source_table": "anomaly_detection.new_users_metrics",
             "bq_destination_table": "anomaly_detection.new_users_metrics_preds",
-            "model_name": "ocsvm_model"
+            "model_name": "ocsvm_model",
+            "service_account": SERVICE_ACCOUNT
         },
-        # enable_caching=False
+        enable_caching=False
     )
     pipeline_job.submit()
 

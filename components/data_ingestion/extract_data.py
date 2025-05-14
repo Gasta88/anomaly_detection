@@ -15,6 +15,7 @@ def extract_data(
     query = f"""
     SELECT created_at, country_code, platform, channel, new_users
     FROM `{project_id}.{bq_table}`
+    WHERE created_at < DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
     ORDER BY created_at
     """
 

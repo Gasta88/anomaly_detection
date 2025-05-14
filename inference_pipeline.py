@@ -3,33 +3,35 @@ from kfp.dsl import  pipeline
 from kfp import compiler
 from components.utils import upload_to_gcs
 import os
-from components.inference import detect_anomalies, save_anomalies_to_bq
+from components.inference.detect_anomalies import detect_anomalies
+from components.inference.get_model import get_model
 from components.utils import upload_to_gcs, BUCKET_NAME
+
 
 @pipeline(name="anomaly-detection-inference-pipeline")
 def anomaly_detection_inference(
     project_id: str,
+    location: str,
     bq_source_table: str,
     bq_destination_table: str,
-    model_name: str
+    model_name: str,
+    service_account: str
 ):
     # Get the latest model
-    model = aiplatform.Model(model_name)
-    model_uri = model.gcs_uri
+    get_model_op = get_model(
+        project_id=project_id, location=location, model_name=model_name
+        )
 
     # Detect anomalies
     detect_op = detect_anomalies(
         project_id=project_id,
-        bq_table=bq_source_table,
-        model=model_uri
+        location=location,
+        src_bq_table=bq_source_table,
+        dest_bq_table=bq_destination_table,
+        model=get_model_op.outputs["model"],
+        service_account=service_account
     )
 
-    # Save anomalies to BigQuery
-    save_op = save_anomalies_to_bq(
-        project_id=project_id,
-        anomalies=detect_op.outputs["output_anomalies"],
-        bq_destination=bq_destination_table
-    )
 
 # Compile and run the pipeline
 pipeline_file = "anomaly_detection_inference_pipeline.json"
