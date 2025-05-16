@@ -35,7 +35,9 @@ This pipelines performs the following steps:
 
 ### Batch Predictions
 This pipeline performs the following steps:
-- ..
+- get trained model resource name from Model Registry
+- generate a temporary table on BigQuery where features are loaded for predictions
+- run a batch prediction job via VertexAI Batch Prediction Job (no need to serve the model)
 
 ## Testing
 
@@ -51,6 +53,13 @@ ENV = ...
 Later on a Terminal run:
 ```bash
 make create
+```
+
+### Run pipelines
+Two commands are used to either train or run inference:
+```bash
+make train
+make infer
 ```
 
 ### Clean up

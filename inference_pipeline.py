@@ -28,7 +28,7 @@ def anomaly_detection_inference(
         location=location,
         src_bq_table=bq_source_table,
         dest_bq_table=bq_destination_table,
-        model=get_model_op.outputs["model"],
+        model_resource_name=get_model_op.output,
         service_account=service_account
     )
 
