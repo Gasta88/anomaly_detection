@@ -69,3 +69,7 @@ __pycache__/
 
 #Database
 *.sql
+
+#Models
+*.joblib
+*.pkl

@@ -34,7 +34,7 @@ def run_inference_pipeline():
             "model_name": "ocsvm_model",
             "service_account": SERVICE_ACCOUNT
         },
-        # enable_caching=False
+        enable_caching=False
     )
     pipeline_job.submit()
 

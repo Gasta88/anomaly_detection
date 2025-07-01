@@ -11,7 +11,7 @@ The pipelines are implemented in Python using the KFP SDK and leverage the Googl
 
 ## Infrastructure Design
 
-TBD
+![anomaly_detection_infra](docs/anomal_detection_infra.jpg)
 
 ## Data
 The data used for this project is pogramatically generated and simulates the use case of an application that gets new users installed for a certain period of time.
