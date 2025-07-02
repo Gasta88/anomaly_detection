@@ -61,7 +61,6 @@ def train_ocsvm_model(
     # Save the model
     tmp_model_path = os.path.join( "/tmp", "model.joblib")
     gcs_model_path = os.path.join( model_output.path, "model.joblib").replace(f'/gcs/{bucket_name}/', '')
-    # model_path = os.path.join( f"{model_output.path}.joblib")
     with open(tmp_model_path, 'wb') as f:
         joblib.dump(model_dict, f)
     # Upload the file to GCS

@@ -24,3 +24,5 @@ CREDENTIALS = service_account.Credentials.from_service_account_file(
     '/Users/francescogastaldello/Documents/service_accounts/vertexai_eighth-duality-457819-r4-8ebb6feb3b32.json',
     scopes=['https://www.googleapis.com/auth/cloud-platform']
 )
+MODEL_NAME = "ocsvm_model"
+BQ_DATASET_NAME = "anomaly_detection"

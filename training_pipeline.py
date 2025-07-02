@@ -2,7 +2,7 @@ from kfp.dsl import pipeline
 from kfp import compiler
 import os
 from components.data_ingestion.extract_data import extract_data
-from components.data_processing.preprocess_data import preprocess_data
+from components.data_processing.preprocess_data_train import preprocess_data_train
 from components.model_training.train_ocsvm_model import train_ocsvm_model
 from components.utils import upload_to_gcs, BUCKET_NAME
 
@@ -16,7 +16,7 @@ def anomaly_detection_pipeline(
 ):
     extract_op = extract_data(project_id=project_id, bq_table=bq_table)
 
-    preprocess_op = preprocess_data(
+    preprocess_op = preprocess_data_train(
         data=extract_op.outputs["output_data"]
     )
 

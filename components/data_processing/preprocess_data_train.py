@@ -3,7 +3,7 @@ from kfp.dsl import component, Artifact, Output, Input
     base_image="python:3.9",
     packages_to_install=["pandas", "scikit-learn", "pyarrow"]
 )
-def preprocess_data(
+def preprocess_data_train(
     data: Input[Artifact],
     output_training_data: Output[Artifact],
     output_metadata: Output[Artifact]
