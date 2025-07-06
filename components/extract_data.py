@@ -5,19 +5,13 @@ from kfp.dsl import component, Artifact, Output
 )
 def extract_data(
     project_id: str,
-    bq_table: str,
+    query: str,
     output_data: Output[Artifact]
 ):
     """Extract data from BigQuery."""
     from google.cloud import bigquery
     import pandas as pd
 
-    query = f"""
-    SELECT created_at, country_code, platform, channel, new_users
-    FROM `{project_id}.{bq_table}`
-    WHERE created_at < DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
-    ORDER BY created_at
-    """
 
     client = bigquery.Client(project=project_id)
     df = client.query(query).to_dataframe()

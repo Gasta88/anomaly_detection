@@ -26,3 +26,17 @@ CREDENTIALS = service_account.Credentials.from_service_account_file(
 )
 MODEL_NAME = "ocsvm_model"
 BQ_DATASET_NAME = "anomaly_detection"
+BQ_TABLE_NAME = "new_users_metrics"
+
+TRAIN_SQL = f"""
+    SELECT created_at, country_code, platform, channel, new_users
+    FROM `{PROJECT_ID}.{BQ_DATASET_NAME}.{BQ_TABLE_NAME}`
+    WHERE created_at < DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+    ORDER BY created_at
+    """
+PREDICT_SQL =f"""
+    SELECT created_at, country_code, platform, channel
+    FROM `{PROJECT_ID}.{BQ_DATASET_NAME}.{BQ_TABLE_NAME}`
+    WHERE created_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+    ORDER BY created_at
+    """     

@@ -8,13 +8,10 @@ def train_ocsvm_model(
     location: str,
     bucket_name: str,
     training_data: Input[Artifact],
-    metadata: Input[Artifact],
     model_output: Output[Model]
 ):
     """Train One-Class SVM model for anomaly detection."""
     import pandas as pd
-    import numpy as np
-    import json
     import os
     from sklearn.svm import OneClassSVM
     import joblib
@@ -28,8 +25,6 @@ def train_ocsvm_model(
 
     # Load data and metadata
     df = pd.read_parquet(training_data.path, engine='pyarrow', dtype_backend="pyarrow")
-    with open(metadata.path, 'r') as f:
-        metadata_dict = json.load(f)
 
     # Get unique values for metadata
     countries = ",".join(df['country_code'].unique())  
@@ -39,12 +34,10 @@ def train_ocsvm_model(
     # Sort by date
     df = df.sort_values('created_at')
 
-    # Get time series
-    ts_data = df['new_users'].values.astype(np.float32)
 
     # Create One-Class SVM model
     ocsvm = OneClassSVM(kernel='rbf', gamma=0.1, nu=0.1)
-    ocsvm.fit(ts_data.reshape(-1, 1))
+    ocsvm.fit(df.drop(['new_users','country_code', 'platform', 'channel','created_at'], axis=1))
     metadata_dict = {
             "country": countries,
             "platform": platforms,

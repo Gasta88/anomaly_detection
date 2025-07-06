@@ -1,9 +1,9 @@
 from kfp.dsl import pipeline
 from kfp import compiler
 import os
-from components.data_ingestion.extract_data import extract_data
-from components.data_processing.preprocess_data_train import preprocess_data_train
-from components.model_training.train_ocsvm_model import train_ocsvm_model
+from components.extract_data import extract_data
+from components.preprocess_data import preprocess_data
+from components.train_ocsvm_model import train_ocsvm_model
 from components.utils import upload_to_gcs, BUCKET_NAME
 
 @pipeline(
@@ -11,19 +11,20 @@ from components.utils import upload_to_gcs, BUCKET_NAME
         )
 def anomaly_detection_pipeline(
     project_id: str,
-    bq_table: str,
+    location: str,
+    query: str,
     bucket_name: str
 ):
-    extract_op = extract_data(project_id=project_id, bq_table=bq_table)
+    extract_op = extract_data(project_id=project_id, query=query)
 
-    preprocess_op = preprocess_data_train(
-        data=extract_op.outputs["output_data"]
+    preprocess_op = preprocess_data(
+        data=extract_op.outputs["output_data"], mode="train"
     )
 
     train_op = train_ocsvm_model(
         project_id=project_id,
-        location="us-central1",
-        bucket_name=BUCKET_NAME,
+        location=location,
+        bucket_name=bucket_name,
         training_data=preprocess_op.outputs["output_training_data"],
         metadata=preprocess_op.outputs["output_metadata"]
     )

@@ -1,5 +1,5 @@
 import argparse
-from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, SERVICE_ACCOUNT, MODEL_NAME, BQ_DATASET_NAME
+from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, SERVICE_ACCOUNT, MODEL_NAME, BQ_DATASET_NAME, BQ_TABLE_NAME, TRAIN_SQL, PREDICT_SQL
 from google.cloud import aiplatform
 
 
@@ -13,7 +13,8 @@ def run_training_pipeline():
         credentials=CREDENTIALS,
         parameter_values={
             "project_id": PROJECT_ID,
-            "bq_table": "{BQ_DATASET_NAME}.new_users_metrics",
+            "location": REGION,
+            "query": TRAIN_SQL,
             "bucket_name": BUCKET_NAME
         },
         enable_caching=False
@@ -23,7 +24,7 @@ def run_training_pipeline():
 def run_inference_pipeline():
     aiplatform.init(project=PROJECT_ID, location=REGION)
     MODEL_URI = [
-        m.resource_name
+        m.uri
         for m in aiplatform.Model.list(order_by="create_time desc")
         if MODEL_NAME in m.display_name
     ][0]
@@ -35,10 +36,9 @@ def run_inference_pipeline():
         parameter_values={
             "project_id": PROJECT_ID,
             "location": REGION,
-            "bigquery_source_input_uri": f"bq://{PROJECT_ID}.{BQ_DATASET_NAME}.new_users_metrics",
-            "bigquery_destination_output_uri": f"bq://{PROJECT_ID}.{BQ_DATASET_NAME}",
+            "query": PREDICT_SQL,
             "model_uri": MODEL_URI,
-            "service_account": SERVICE_ACCOUNT
+            "bucket_name": BUCKET_NAME
         },
         enable_caching=False
     )

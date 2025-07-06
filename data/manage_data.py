@@ -4,16 +4,16 @@ import random
 from datetime import datetime, timedelta
 
 # Define the table name and dataset ID
-TABLE_NAMES = ['new_users_metrics', 'new_users_metrics','new_users_metrics_preds']
+TABLE_NAMES = ['new_users_metrics','new_users_metrics_preds']
 DATASET_ID = 'anomaly_detection'
 
 # Generate random data, change num_days to generate more data
-def generate_random_data(num_days=100):
+def generate_random_data(num_days=1000):
     data = []
     start_date = datetime.now()
     for day in range(num_days):
         date = start_date - timedelta(days=day)
-        for country_code in ["IT", "FR", "DE"]:
+        for country_code in ["it", "fr", "de"]:
             if random.random() < 0.05:
                 # Skip 5% of the data
                 continue
