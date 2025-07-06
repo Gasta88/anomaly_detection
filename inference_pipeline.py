@@ -19,15 +19,14 @@ def anomaly_detection_inference(
     extract_op = extract_data(project_id=project_id, query=query)
 
     preprocess_op = preprocess_data(
-        data=extract_op.outputs["output_data"], mode="infer"
+        input_data=extract_op.outputs["output_data"], mode="infer"
     )
 
     detect_op = detect_anomalies(
         project_id=project_id,
-        location=location,
         bucket_name=bucket_name,
         raw_infer_data = extract_op.outputs["output_data"],
-        infer_data=preprocess_op.outputs["output_training_data"],
+        infer_data=preprocess_op.outputs["output_data"],
         model_uri=model_uri
     )
 

@@ -1,5 +1,5 @@
 import argparse
-from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, SERVICE_ACCOUNT, MODEL_NAME, BQ_DATASET_NAME, BQ_TABLE_NAME, TRAIN_SQL, PREDICT_SQL
+from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, MODEL_NAME, TRAIN_SQL, PREDICT_SQL, SERVICE_ACCOUNT
 from google.cloud import aiplatform
 
 
@@ -19,7 +19,7 @@ def run_training_pipeline():
         },
         enable_caching=False
     )
-    pipeline_job.submit()
+    return pipeline_job
 
 def run_inference_pipeline():
     aiplatform.init(project=PROJECT_ID, location=REGION)
@@ -40,9 +40,9 @@ def run_inference_pipeline():
             "model_uri": MODEL_URI,
             "bucket_name": BUCKET_NAME
         },
-        enable_caching=False
+        enable_caching=True
     )
-    pipeline_job.submit()
+    return pipeline_job
 
 def main():
     parser = argparse.ArgumentParser()
@@ -50,8 +50,10 @@ def main():
     args = parser.parse_args()
 
     if args.action == "train":
-        run_training_pipeline()
+        pipeline_job = run_training_pipeline()
     elif args.action == "infer":
-        run_inference_pipeline()
+        pipeline_job = run_inference_pipeline()
+
+    pipeline_job.submit(service_account=SERVICE_ACCOUNT)
 if __name__ == "__main__":
     main()

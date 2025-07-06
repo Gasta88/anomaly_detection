@@ -18,15 +18,14 @@ def anomaly_detection_pipeline(
     extract_op = extract_data(project_id=project_id, query=query)
 
     preprocess_op = preprocess_data(
-        data=extract_op.outputs["output_data"], mode="train"
+        input_data=extract_op.outputs["output_data"], mode="train"
     )
 
     train_op = train_ocsvm_model(
         project_id=project_id,
         location=location,
         bucket_name=bucket_name,
-        training_data=preprocess_op.outputs["output_training_data"],
-        metadata=preprocess_op.outputs["output_metadata"]
+        training_data=preprocess_op.outputs["output_data"]
     )
 
 # Compile and run the pipeline

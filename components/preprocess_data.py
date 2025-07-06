@@ -4,16 +4,16 @@ from kfp.dsl import component, Artifact, Output, Input
     packages_to_install=["pandas", "scikit-learn", "pyarrow"]
 )
 def preprocess_data(
-    data: Input[Artifact],
+    input_data: Input[Artifact],
     mode: str,
     output_data: Output[Artifact],
 ):
-    """Preprocess data for anomaly detection."""
+    """Preprocess input_data for anomaly detection."""
     import pandas as pd
     from sklearn.preprocessing import LabelEncoder
 
-    # Load the data
-    df = pd.read_parquet(data.path, engine='pyarrow', dtype_backend="pyarrow")
+    # Load the input_data
+    df = pd.read_parquet(input_data.path, engine='pyarrow', dtype_backend="pyarrow")
 
     # Convert dates to datetime and extract features
     df['created_at'] = pd.to_datetime(df['created_at'])
@@ -39,4 +39,4 @@ def preprocess_data(
     else:
         print("Inference mode")
         # Save the preprocessed data
-        data.drop(['new_users','country_code', 'platform', 'channel', 'created_at'], axis=1).to_parquet(output_data.path)
+        df.drop(['new_users', 'country_code', 'platform', 'channel', 'created_at'], axis=1).to_parquet(output_data.path)

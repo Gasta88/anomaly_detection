@@ -40,7 +40,7 @@ delete_bucket:
 # Delete models from Model Registry
 delete_models:
 	@echo "Deleting models Model Registry-$(ENV)"
-	# @gcloud ai models delete $$(gcloud ai models list --format='get(name)' --region=$(REGION)) --region=$(REGION) --quiet
+	@gcloud ai models delete $$(gcloud ai models list --format='get(name)' --region=$(REGION)) --region=$(REGION) --quiet
 
 # Compile and upload pipelines
 create_pipelines:

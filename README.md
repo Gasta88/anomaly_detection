@@ -30,14 +30,16 @@ Pipelines built with VertexAI are used for two main scopes:
 This pipelines performs the following steps:
 - get raw input from BigQuery
 - preprocess the features for the training phase
-- train as many One-Class SVM model as there are combinations of *country_code + platform + channel*
+- train one One-Class SVM model as there are combinations of *country_code + platform + channel*
 - load the trained model on a Model Registry
 
 ### Batch Predictions
 This pipeline performs the following steps:
-- get trained model resource name from Model Registry
+- get trained model URI from Model Registry
 - generate a temporary table on BigQuery where features are loaded for predictions
-- run a batch prediction job via VertexAI Batch Prediction Job (no need to serve the model)
+- download the model locally to the container
+- run a batch prediction job via `model.predict()` method
+- store prediction on a table in BigQuery
 
 ## Testing
 

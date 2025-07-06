@@ -35,7 +35,7 @@ TRAIN_SQL = f"""
     ORDER BY created_at
     """
 PREDICT_SQL =f"""
-    SELECT created_at, country_code, platform, channel
+    SELECT new_users,created_at, country_code, platform, channel
     FROM `{PROJECT_ID}.{BQ_DATASET_NAME}.{BQ_TABLE_NAME}`
     WHERE created_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
     ORDER BY created_at
