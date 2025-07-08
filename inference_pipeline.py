@@ -24,6 +24,7 @@ def anomaly_detection_inference(
 
     detect_op = detect_anomalies(
         project_id=project_id,
+        location=location,
         bucket_name=bucket_name,
         raw_infer_data = extract_op.outputs["output_data"],
         infer_data=preprocess_op.outputs["output_data"],

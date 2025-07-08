@@ -4,7 +4,7 @@ import random
 from datetime import datetime, timedelta
 
 # Define the table name and dataset ID
-TABLE_NAMES = ['new_users_metrics','new_users_metrics_preds']
+TABLE_NAMES = ['new_users_metrics']
 DATASET_ID = 'anomaly_detection'
 
 # Generate random data, change num_days to generate more data

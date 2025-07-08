@@ -2,10 +2,11 @@ from kfp.dsl import component, Artifact, Input
 
 @component(
     base_image="python:3.9",
-    packages_to_install=["scikit-learn", "pandas", "pyarrow", "google-cloud-storage", "google-cloud-bigquery", "numpy"]
+    packages_to_install=["scikit-learn", "pandas", "pyarrow", "google-cloud-storage", "google-cloud-bigquery", "numpy", "pandas-gbq"]
 )
 def detect_anomalies(
     project_id: str,
+    location: str,
     model_uri: str,
     bucket_name: str,
     infer_data: Input[Artifact],
@@ -39,10 +40,13 @@ def detect_anomalies(
     mapping = {1: 'correct', -1: 'outlier'}
     prediction_labels = np.vectorize(mapping.get)(predictions)
     raw_df['prediction'] = prediction_labels
+    raw_df['created_at'] = raw_df['created_at'].dt.strftime('%Y-%m-%d')
+    
+    data = raw_df.to_dict(orient='records')
 
     # Save to BigQuery table
     client = bigquery.Client()
-    table_id = f"{project_id}.anomaly_detection.predictions"
+    table_id = "anomaly_detection.predictions"
     job_config = bigquery.LoadJobConfig(
         schema=[
             bigquery.SchemaField("created_at", bigquery.enums.SqlTypeNames.DATE),
@@ -54,6 +58,6 @@ def detect_anomalies(
         ],
         write_disposition=bigquery.WriteDisposition.WRITE_APPEND
     )
-    job = client.load_table_from_dataframe(raw_df, table_id, job_config=job_config)
+    job = client.load_table_from_json(data, table_id, job_config=job_config)
     job.result()
 

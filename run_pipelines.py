@@ -54,6 +54,7 @@ def main():
     elif args.action == "infer":
         pipeline_job = run_inference_pipeline()
 
-    pipeline_job.submit(service_account=SERVICE_ACCOUNT)
+    # pipeline_job.submit(service_account=SERVICE_ACCOUNT)
+    pipeline_job.submit()
 if __name__ == "__main__":
     main()
