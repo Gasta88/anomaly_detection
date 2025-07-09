@@ -45,7 +45,7 @@ def detect_anomalies(
     data = raw_df.to_dict(orient='records')
 
     # Save to BigQuery table
-    client = bigquery.Client()
+    client = bigquery.Client(project=project_id,location=location)
     table_id = "anomaly_detection.predictions"
     job_config = bigquery.LoadJobConfig(
         schema=[
