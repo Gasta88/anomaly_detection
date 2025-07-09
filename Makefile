@@ -3,8 +3,8 @@ REGION = us-central1
 INPUT_TABLE_NAME = new_users_metrics
 OUTPUT_TABLE_NAME = predictions
 PYTHON_SCRIPT = data/manage_data.py
-PROJECT_ID = eighth-duality-457819-r4
-BUCKET_NAME = bondola-ai-anomaly-detection
+PROJECT_ID = my-cool-project-457818
+BUCKET_NAME = anomaly-detection
 ENV = dev
 
 # Create an empty BigQuery dataset and table

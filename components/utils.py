@@ -1,6 +1,8 @@
 from google.cloud import storage
 import os
 from google.oauth2 import service_account
+from dotenv import load_dotenv
+load_dotenv()
 
 #Functions
 def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
@@ -16,12 +18,11 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
 
 #Variables
 ENV = os.getenv("ENV", "dev")
-PROJECT_ID = "eighth-duality-457819-r4"
+PROJECT_ID = "my-cool-project-457818"
 REGION = "us-central1"
-BUCKET_NAME = f"bondola-ai-anomaly-detection-{ENV}"
-SERVICE_ACCOUNT="vertexai@eighth-duality-457819-r4.iam.gserviceaccount.com"
+BUCKET_NAME = f"anomaly-detection-{ENV}"
 CREDENTIALS = service_account.Credentials.from_service_account_file(
-    '/Users/francescogastaldello/Documents/service_accounts/vertexai_eighth-duality-457819-r4-8ebb6feb3b32.json',
+    os.getenv("SERVICE_ACCOUNT_FILE_PATH"),
     scopes=['https://www.googleapis.com/auth/cloud-platform']
 )
 MODEL_NAME = "ocsvm_model"

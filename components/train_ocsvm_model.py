@@ -67,3 +67,4 @@ def train_ocsvm_model(
         serving_container_ports=[8080],
         serving_container_image_uri="us-docker.pkg.dev/vertex-ai/prediction/sklearn-cpu.1-0:latest"
     )
+    print(f"Model {model.display_name} uploaded to Vertex AI Model Registry.")

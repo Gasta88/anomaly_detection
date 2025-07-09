@@ -1,5 +1,5 @@
 import argparse
-from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, MODEL_NAME, TRAIN_SQL, PREDICT_SQL, SERVICE_ACCOUNT
+from components.utils import PROJECT_ID, REGION, BUCKET_NAME, CREDENTIALS, MODEL_NAME, TRAIN_SQL, PREDICT_SQL
 from google.cloud import aiplatform
 
 
@@ -54,7 +54,6 @@ def main():
     elif args.action == "infer":
         pipeline_job = run_inference_pipeline()
 
-    # pipeline_job.submit(service_account=SERVICE_ACCOUNT)
     pipeline_job.submit()
 if __name__ == "__main__":
     main()

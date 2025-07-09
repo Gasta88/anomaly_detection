@@ -60,4 +60,4 @@ def detect_anomalies(
     )
     job = client.load_table_from_json(data, table_id, job_config=job_config)
     job.result()
-
+    print(f"Saved {len(data)} rows to {table_id}")
