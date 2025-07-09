@@ -1,6 +1,7 @@
 DATASET_NAME = anomaly_detection
 REGION = us-central1
-TABLE_NAME = new_users_metrics
+INPUT_TABLE_NAME = new_users_metrics
+OUTPUT_TABLE_NAME = predictions
 PYTHON_SCRIPT = data/manage_data.py
 PROJECT_ID = eighth-duality-457819-r4
 BUCKET_NAME = bondola-ai-anomaly-detection
@@ -8,9 +9,10 @@ ENV = dev
 
 # Create an empty BigQuery dataset and table
 create_dataset:
-	@echo "Creating dataset $(DATASET_NAME) and table $(TABLE_NAME)"
+	@echo "Creating dataset $(DATASET_NAME) and tables $(INPUT_TABLE_NAME), $(OUTPUT_TABLE_NAME)"
 	@bq mk --location=$(REGION) --dataset --default_table_expiration=86400 $(PROJECT_ID):$(DATASET_NAME)
-	@bq mk --table $(PROJECT_ID):$(DATASET_NAME).$(TABLE_NAME) data/schema.json
+	@bq mk --table $(PROJECT_ID):$(DATASET_NAME).$(INPUT_TABLE_NAME) data/input_table_schema.json
+	@bq mk --table $(PROJECT_ID):$(DATASET_NAME).$(OUTPUT_TABLE_NAME) data/output_table_schema.json
 
 # Remove the given BigQuery dataset and table
 delete_dataset:
@@ -19,7 +21,7 @@ delete_dataset:
 
 # Insert data into the BigQuery table
 insert_data:
-	@echo "Inserting data into table $(TABLE_NAME)"
+	@echo "Inserting data into table $(INPUT_TABLE_NAME)"
 	@python $(PYTHON_SCRIPT) insert
 
 # Truncate the BigQuery table
