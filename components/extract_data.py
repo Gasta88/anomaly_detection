@@ -10,8 +10,6 @@ def extract_data(
 ):
     """Extract data from BigQuery."""
     from google.cloud import bigquery
-    import pandas as pd
-
 
     client = bigquery.Client(project=project_id)
     df = client.query(query).to_dataframe()
