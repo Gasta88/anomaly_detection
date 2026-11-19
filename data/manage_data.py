@@ -51,8 +51,8 @@ def truncate_data():
         try:
             query = f"TRUNCATE TABLE `{table_id}`"
             client.query(query).result()
-        except:
-            pass
+        except Exception as error:
+            print(f"Could not truncate {table_id}: {error}")
     
 
 def main():
